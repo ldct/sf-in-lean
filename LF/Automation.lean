@@ -1673,7 +1673,7 @@ end RegExp
 :::::exercise (rating := 5) (name := "palindrome_converse") (optional := true)
 
 Here is one possible definition of the palindrome inductive predicate, {name}`Pal`,
-which we have seen in the last chapter.
+which we saw in the {Ref "IndProp"}[last chapter].
 
 ```lean
 namespace PalConv
@@ -1684,9 +1684,9 @@ inductive Pal {α : Type} : List α → Prop where
   | cons_snoc {x : α} {l : List α} (h : Pal l) : Pal (x :: (l ++ [x]))
 ```
 
-We prove that `∀ l, Pal l → l = l.reverse`.
-The converse direction is also true, but significantly more difficult, due
-to the lack of evidence.  Using the of the `Pal` above the prove that
+We previously proved that `∀ l, Pal l → l = l.reverse`.
+The converse is also true, but significantly more difficult to prove, due
+to the lack of evidence.  Using the definition of `Pal` above, prove that
 
 ```display
 ∀ l, l = l.reverse → Pal l
