@@ -727,9 +727,9 @@ _Types_ describe the possible shapes of values.
 :::
 
 ::::full
-The _typing relation_ `⊢ t ⦂ T` relates terms to the types of their
-results.  In informal notation it is often written `⊢ t ⦂ T` and
-pronounced "`t` has type `T`."  The `⊢` symbol is called a "turnstile."
+The _typing relation_ `⊢ t ⦂ τ` relates terms to the types of their
+results.  In informal notation it is often written `⊢ t ⦂ τ` and
+pronounced "`t` has type `τ`."  The `⊢` symbol is called a "turnstile."
 The `⦂` between the term and its type is a dedicated type-colon glyph
 (distinct from an ordinary `:`); in the editor you enter it with the Lean
 input abbreviation `\tc` followed by a space.
@@ -744,9 +744,9 @@ For the moment, the context is always empty.
                      --------------               (fls)
                      ⊢ false ⦂ Bool
 
-          ⊢ t₁ ⦂ Bool    ⊢ t₂ ⦂ T    ⊢ t₃ ⦂ T
+          ⊢ t₁ ⦂ Bool    ⊢ t₂ ⦂ τ    ⊢ t₃ ⦂ τ
           -----------------------------------     (ite)
-              ⊢ if t₁ then t₂ else t₃ ⦂ T
+              ⊢ if t₁ then t₂ else t₃ ⦂ τ
 
                        ---------                  (zero)
                        ⊢ 0 ⦂ Nat
@@ -827,7 +827,6 @@ inductive Tm.HasType : Tm → Ty → Prop where
   | succ (t₁ : Tm) (h : <{ ⊢ t₁ ⦂ Nat }>) : <{ ⊢ succ t₁ ⦂ Nat }>
   | pred (t₁ : Tm) (h : <{ ⊢ t₁ ⦂ Nat }>) : <{ ⊢ pred t₁ ⦂ Nat }>
   | isZero (t₁ : Tm) (h : <{ ⊢ t₁ ⦂ Nat }>) : <{ ⊢ iszero t₁ ⦂ Bool }>
-end
 ```
 
 ::::details "Notation encoding: typing relation"
@@ -856,6 +855,7 @@ def Tm.HasType.unexpand : Lean.PrettyPrinter.Unexpander
   | `($_ $t:ident $T:ident)  => `(<{ ⊢ $(⟨t.raw⟩) ⦂ $T }>)
   | `($_ $t $T)              => `(<{ ⊢ ~$t ⦂ ~$T }>)
   | _ => throw ()
+end
 ```
 ::::
 
@@ -933,7 +933,7 @@ understand the parts we've given of the informal proof in the following
 exercise before starting — this will save you a lot of time.)
 
 ```lean
-theorem progress (t : Tm) (τ : Ty) (hT : <{ ⊢ t ⦂ T }>) : Tm.IsValue t ∨ ∃ t', t ⟶ t' := by
+theorem progress (t : Tm) (τ : Ty) (hT : <{ ⊢ t ⦂ τ }>) : Tm.IsValue t ∨ ∃ t', t ⟶ t' := by
   solution!
     induction hT with
     | tru => exact .inl (.inl .tru)
@@ -1138,7 +1138,7 @@ sure you understand the informal proof fragment in the following exercise
 first.)
 
 ```lean
-theorem preservation (t t' : Tm) (τ : Ty) (hT : <{ ⊢ t ⦂ T }>) (he : t ⟶ t') : <{ ⊢ t' ⦂ T }> := by
+theorem preservation (t t' : Tm) (τ : Ty) (hT : <{ ⊢ t ⦂ τ }>) (he : t ⟶ t') : <{ ⊢ t' ⦂ τ }> := by
   solution!
     induction hT generalizing t' with
     | tru => cases he
